@@ -1,0 +1,14 @@
+h1 {
+  text-align: center;
+  color: white;
+}
+
+#display {
+  border-style: solid;
+  border: 2px;
+}
+
+aside {
+    text-align: center;
+    font-size: 20px;
+}
