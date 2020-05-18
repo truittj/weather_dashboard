@@ -7,3 +7,6 @@ Below is a screen shot of the app.
 <img src="./Screen_Shot.png" alt="scren shot of application">
 
 
+Link to application: 
+
+https://truittj.github.io/weather_dashboard/
