@@ -58,7 +58,6 @@ function displayFiveDay (fiveDayURL) {
             for (var i = 0; i < 5; i++) {
                 var divCard = $("<div>").attr("class", "col-2 card bgcolor rounded");
                 
-                
                 var cardDate = fiveDayResponse.list[i].dt_txt
                 cardPTagDate= $("<h4>").attr("class", "text-center").text(moment(cardDate).format('MMMM Do YYYY'));
 
@@ -71,9 +70,9 @@ function displayFiveDay (fiveDayURL) {
                 var cardTemp = $("<p>").text("Temp: " + cardTempConvert + " F");
 
 
-                cardPTagHumidity= $("<p>").text("Humidity: " +fiveDayResponse.list[i].main.humidity + "%" );
+                cardPTagHumidity= $("<p>").text("Humidity: " + fiveDayResponse.list[i].main.humidity + "%" );
 
-                divCard[i].append(cardPTagDate[i], cardIcon[i], cardTemp[i], cardPTagHumidity[i]);  
+                divCard.append(cardPTagDate, cardIcon, cardTemp, cardPTagHumidity);  
                 $("#fiveDay").append(divCard[i]);
                 
   };
