@@ -7,53 +7,119 @@ if (!Array.isArray(inputCitiesArray)) {
 }
 
 function sanitizeCityInput(cityInput) {
-  var queryURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityInput + "&appid=6f878781f6244ccdbc4b04689e3394dd";
-  console.log(queryURL);
+  var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityInput + "&appid=6f878781f6244ccdbc4b04689e3394dd";
   $.ajax({
     url: queryURL,
     method: "GET",
   }).then(function (response) {
-      var date=response.list[0].dt_txt;
-      console.log(moment(date).format('MMMM Do YYYY, h:mm:ss a'));
-    console.log(response.city.coord.lat);
-    console.log(response.city.coord.lon);
+    console.log(response);
 
-    var lat = response.city.coord.lat;
-    var lon = response.city.coord.lon;
+      var date=response.dt_txt;
+      console.log(moment(date).format('MMMM Do YYYY, h:mm:ss a'));
+    
+    
+    console.log(response.coord.lat);
+    console.log(response.coord.lon);
+
+    var lat = response.coord.lat;
+    var lon = response.coord.lon;
 
             $("#display").empty();
-            var pngTag = response.list[0].weather[0].icon;
+            var pngTag = response.weather[0].icon;
 
             var currentIcon = $("<img>").attr("src", "http://openweathermap.org/img/wn/" + pngTag + ".png");
-            currentIcon.attr("alt" , "Visual Representation of daily forcast");
+            currentIcon.attr("alt" , "Visual representation of daily forcast");
             currentIcon.attr("id", "visRep");
 
-            var cityName = $("<h3>").html(response.city.name + " " + "(" + moment().subtract(10, 'days').calendar() + ")");
-            var windSpeed = $("<h5>").text("Wind Spped: " + response.list[0].wind.speed+ " MPH");
-            tempConvert = Math.round(((response.list[0].main.temp) - 273.15) * 1.80 + 32);      
-            var temp = $("<h5>").text("Temperarue: " + tempConvert + " F");      
-            var humidity = $("<h5>").text("Humidity: " + response.list[0].main.humidity +"%");      
+            var cityName = $("<h3>").html(response.name + " " + "(" + moment(date).format('MMMM Do YYYY') + ")");
+            var windSpeed = $("<p>").text("Wind Spped: " + response.wind.speed+ " MPH");
+            tempConvert = Math.round(((response.main.temp) - 273.15) * 1.80 + 32);      
+            var temp = $("<p>").text("Temperarue: " + tempConvert + " F");      
+            var humidity = $("<p>").text("Humidity: " + response.main.humidity +"%");      
 
             $("#display").append(cityName, currentIcon, windSpeed, temp, humidity );
+            
+            var uvURL= "http://api.openweathermap.org/data/2.5/uvi?appid=6f878781f6244ccdbc4b04689e3394dd&lat=" + lat + "&lon=" + lon;
+            console.log(uvURL);
+            displayUVInfo(uvURL);
 
-    var uvURL= "http://api.openweathermap.org/data/2.5/uvi?appid=6f878781f6244ccdbc4b04689e3394dd&lat=" + lat + "&lon=" + lon;
-    console.log(uvURL);
+            var fiveDayURL= "http://api.openweathermap.org/data/2.5/forecast?q=" + cityInput + "&appid=6f878781f6244ccdbc4b04689e3394dd";
+            console.log(fiveDayURL);
+            displayFiveDay(fiveDayURL);
+});
+}
+function displayFiveDay (fiveDayURL) {
+    $.ajax({
+        url: fiveDayURL,
+        method: "GET",
+      }).then(function (fiveDayResponse) {
+        console.log(fiveDayResponse);
 
-    displayCityInfo(uvURL);
+            for (var i = 0; i < 5; i++) {
 
-        
+                var divCard = $("<div>").attr("class", "col-2 card bgcolor rounded bg-primary ");
+                
+                
+                var cardDate = fiveDayResponse.list[i].dt_txt
+                cardPTagDate= $("<P>").attr("class", "text-center").text(moment(cardDate).format('MMMM Do YYYY'));
+
+                var cardPngTag = fiveDayResponse.list[i].weather[i].icon;
+                var cardIcon = $("<img>").attr("src", "http://openweathermap.org/img/wn/" + cardPngTag + ".png");
+                cardIcon.attr("alt" , "Visual representation of daily forcast");
+                
+                cardTempConvert = Math.round(((fiveDayResponse.list[i].main.temp) - 273.15) * 1.80 + 32);      
+                var cardTemp = $("<p>").text("Temp: " + cardTempConvert + " F");
+
+
+                cardPTagHumidity= $("<p>").attr("class", "text-center").text("Humidity: " +fiveDayResponse.list[i].main.humidity + "%" );
+
+                divCard[i].append(cardPTagDate[i], cardIcon[i], cardTemp[i], cardPTagHumidity[i]);  
+                $("#fiveDay").append(divCard[i]);
+                    
+            //     <div class="card" style="width: 18rem;">
+            //     <img src="..." class="card-img-top" alt="...">
+            //     <div class="card-body">
+            //       <h5 class="card-title">Card title</h5>
+            //       <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            //       <a href="#" class="btn btn-primary">Go somewhere</a>
+            //     </div>
+            //   </div>
+  };
 });
 }
 
-function displayCityInfo(uvURL) {
+
+function displayUVInfo(uvURL) {
     $.ajax({
      url: uvURL,
     method: "GET",
-     }).then(function (response) {
-        console.log(response.value);
+     }).then(function (uvResponse) {
+        console.log(uvResponse.value);
 
-            
-            
+        var uvIndexNum = uvResponse.value;
+            if(uvIndexNum  > 10){
+                //red=badge badge-danger
+                uvIndexSpan=$("<span>").attr("class", "badge badge-danger");
+                uvIndexSpan.text(uvIndexNum);
+                uvIndexPTag=$("<p>").text("UV Index: ");
+                uvIndexPTag.append(uvIndexSpan);
+                $("#display").append(uvIndexPTag);
+
+            }
+            //orange=badge badge-warning
+            else if(uvIndexNum > 4){
+                uvIndexSpan=$("<span>").attr("class", "badge badge-warning");
+                uvIndexSpan.text(uvIndexNum);
+                uvIndexPTag=$("<p>").text("UV Index: ");
+                uvIndexPTag.append(uvIndexSpan);
+                $("#display").append(uvIndexPTag);            }
+            //green=badge badge-success
+            else{
+                uvIndexSpan=$("<span>").attr("class", "badge badge-success");
+                uvIndexSpan.text(uvIndexNum);
+                uvIndexPTag=$("<p>").text("UV Index: ");
+                uvIndexPTag.append(uvIndexSpan);
+                $("#display").append(uvIndexPTag);            };
 
         renderCityInfo();
 

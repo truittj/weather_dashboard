@@ -10,11 +10,14 @@
     <link rel="stylesheet" type="text/css" href="./styles.css">
   </head>
   <body>
-    <nav class="navbar-12 sticky-top bg-dark">
+    <nav class="navbar-fluid sticky-top bg-dark">
         <h1>Weather Dashboard</h1>
     </nav>
-    <main class="container">
+    <main class="container-8">
+
+    
         <section class="row">
+            
             <article class="col-4 bg-light">
                 <form id="city-form">
                     <label for="cityInput"><h2>Search for a City:</h2></label>
@@ -23,20 +26,26 @@
                     <article class="col" id="city-list">
                         <!--Dynamically add city list arrry here-->
                     </article>
-
+                </form>    
             </article>
-            <article class="col-8 border" id="display">
                 
+        <section class="col-8">
+           
+            <article class="col border border-dark" id="display">
+                <div></div>
                 <!-- dynamically add search critaria here-->
-                
+
             </article>
-            <article class="col-8 border" id="fiveDay">
-
-                <!--dynamically add 5 day forecast here-->
-
+            
+            <article class="col">
+                <h2>5-Day Forecast:</h2>
+                <div id="fiveDay">
+                    <!--dynamically add 5 day forecast here-->
+                </div>
             </article>
 
         </section>
+    </section>
     </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
