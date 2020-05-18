@@ -22,13 +22,19 @@ function sanitizeCityInput(cityInput) {
     var lon = response.city.coord.lon;
 
             $("#display").empty();
-            var cityName = $("<h2>").text(response.city.name + " " + moment().subtract(10, 'days').calendar());
+            var pngTag = response.list[0].weather[0].icon;
+
+            var currentIcon = $("<img>").attr("src", "http://openweathermap.org/img/wn/" + pngTag + ".png");
+            currentIcon.attr("alt" , "Visual Representation of daily forcast");
+            currentIcon.attr("id", "visRep");
+
+            var cityName = $("<h3>").html(response.city.name + " " + "(" + moment().subtract(10, 'days').calendar() + ")");
             var windSpeed = $("<h5>").text("Wind Spped: " + response.list[0].wind.speed+ " MPH");
             tempConvert = Math.round(((response.list[0].main.temp) - 273.15) * 1.80 + 32);      
             var temp = $("<h5>").text("Temperarue: " + tempConvert + " F");      
             var humidity = $("<h5>").text("Humidity: " + response.list[0].main.humidity +"%");      
 
-            $("#display").append(cityName, windSpeed, temp, humidity);
+            $("#display").append(cityName, currentIcon, windSpeed, temp, humidity );
 
     var uvURL= "http://api.openweathermap.org/data/2.5/uvi?appid=6f878781f6244ccdbc4b04689e3394dd&lat=" + lat + "&lon=" + lon;
     console.log(uvURL);
