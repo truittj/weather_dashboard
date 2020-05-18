@@ -16,36 +16,46 @@
     <main class="container">
 
     
-        <section class="row">
+        <div class="row">
             
-            <article class="col bg-light">
+            <article class="col-4 bg-light">
                 <form id="city-form">
                     <label for="cityInput"><h2>Search for a City:</h2></label>
                     <input class="form-control" type="text" id="cityInput">
                     <button class="btn btn-primary fas fa-search" id="city-submit" type="submit" value="City Search"> </button>
-                    <article class="col" id="city-list">
+                    <article class="" id="city-list">
                         <!--Dynamically add city list arrry here-->
                     </article>
                 </form>    
             </article>
                 
-        <section class="col-8">
-           
-            <article class="col border border-dark" id="display">
+        <article class="col-8" id="weatherReport">
+           <div class="row">
+            <article class=" border" id="display">
                 <div></div>
                 <!-- dynamically add search critaria here-->
 
             </article>
+           </div>
             
-            <article class="col">
-                <h2>5-Day Forecast:</h2>
-                <div id="fiveDay">
+
+            <div class="row-fluid">
+                <div class="row-fluid fiveDay" >
+                    <h2>5-Day Forecast:</h2>
+                    
+                    
+                </div>
+                <div class="row" id="fiveDay">
+                    
                     <!--dynamically add 5 day forecast here-->
                 </div>
-            </article>
 
-        </section>
-    </section>
+            </div>
+            
+            
+
+        </article>
+    </div>
     </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>

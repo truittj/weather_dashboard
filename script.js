@@ -48,7 +48,10 @@ function sanitizeCityInput(cityInput) {
             displayFiveDay(fiveDayURL);
 });
 }
+
+//displayFiveDay("http://api.openweathermap.org/data/2.5/forecast?q=tucson&appid=6f878781f6244ccdbc4b04689e3394dd")
 function displayFiveDay (fiveDayURL) {
+    console.log(fiveDayURL)
     $.ajax({
         url: fiveDayURL,
         method: "GET",
@@ -56,24 +59,28 @@ function displayFiveDay (fiveDayURL) {
         console.log(fiveDayResponse);
         $("#fiveDay").empty();
             for (var i = 0; i < 5; i++) {
-                var divCard = $("<div>").attr("class", "col-2 card bgcolor rounded");
+                var divCard = $("<div>").attr("class", "col bgcolor rounded fivedaydiv");
                 
-                var cardDate = fiveDayResponse.list[i].dt_txt
+                var cardDate = fiveDayResponse.list[i*8].dt_txt
                 cardPTagDate= $("<h4>").attr("class", "text-center").text(moment(cardDate).format('MMMM Do YYYY'));
-
-                var cardPngTag = fiveDayResponse.list[i].weather[i].icon;
+                console.log(fiveDayResponse.list[i*8].dt_txt)
+                var cardPngTag = fiveDayResponse.list[i*8].weather[0].icon;
                 console.log(cardPngTag);
                 var cardIcon = $("<img>").attr("src", "http://openweathermap.org/img/wn/" + cardPngTag + ".png");
                 cardIcon.attr("alt" , "Visual representation of daily forcast");
                 
-                cardTempConvert = Math.round(((fiveDayResponse.list[i].main.temp) - 273.15) * 1.80 + 32);      
+                cardTempConvert = Math.round(((fiveDayResponse.list[i*8].main.temp) - 273.15) * 1.80 + 32);      
                 var cardTemp = $("<p>").text("Temp: " + cardTempConvert + " F");
 
 
-                cardPTagHumidity= $("<p>").text("Humidity: " + fiveDayResponse.list[i].main.humidity + "%" );
+                cardPTagHumidity= $("<p>").text("Humidity: " + fiveDayResponse.list[i*8].main.humidity + "%" );
 
-                divCard.append(cardPTagDate, cardIcon, cardTemp, cardPTagHumidity);  
-                $("#fiveDay").append(divCard[i]);
+            divCard.append(cardPTagDate, cardIcon, cardTemp, cardPTagHumidity);  
+                // divCard.append(cardIcon);
+                // divCard.append(cardTemp)
+                // divCard.append(cardPTagHumidity)
+               
+                $("#fiveDay").append(divCard);
                 
   };
 });
@@ -123,7 +130,7 @@ function renderCityInfo() {
 
     for (var i = 0; i < inputCitiesArray.length; i++) {
         var aside = $("<aside>");
-        aside.addClass("col text-dark bg-white border border-secondary rounded-sm city");
+        aside.addClass("text-dark bg-white border border-secondary rounded-sm city");
         aside.attr("data-name", inputCitiesArray[i]);
         aside.text(inputCitiesArray[i]);
         $("#city-list").append(aside);
