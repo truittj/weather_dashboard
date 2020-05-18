@@ -54,16 +54,16 @@ function displayFiveDay (fiveDayURL) {
         method: "GET",
       }).then(function (fiveDayResponse) {
         console.log(fiveDayResponse);
-
+        $("#fiveDay").empty();
             for (var i = 0; i < 5; i++) {
-
-                var divCard = $("<div>").attr("class", "col-2 card bgcolor rounded bg-primary ");
+                var divCard = $("<div>").attr("class", "col-2 card bgcolor rounded");
                 
                 
                 var cardDate = fiveDayResponse.list[i].dt_txt
-                cardPTagDate= $("<P>").attr("class", "text-center").text(moment(cardDate).format('MMMM Do YYYY'));
+                cardPTagDate= $("<h4>").attr("class", "text-center").text(moment(cardDate).format('MMMM Do YYYY'));
 
                 var cardPngTag = fiveDayResponse.list[i].weather[i].icon;
+                console.log(cardPngTag);
                 var cardIcon = $("<img>").attr("src", "http://openweathermap.org/img/wn/" + cardPngTag + ".png");
                 cardIcon.attr("alt" , "Visual representation of daily forcast");
                 
@@ -71,19 +71,11 @@ function displayFiveDay (fiveDayURL) {
                 var cardTemp = $("<p>").text("Temp: " + cardTempConvert + " F");
 
 
-                cardPTagHumidity= $("<p>").attr("class", "text-center").text("Humidity: " +fiveDayResponse.list[i].main.humidity + "%" );
+                cardPTagHumidity= $("<p>").text("Humidity: " +fiveDayResponse.list[i].main.humidity + "%" );
 
                 divCard[i].append(cardPTagDate[i], cardIcon[i], cardTemp[i], cardPTagHumidity[i]);  
                 $("#fiveDay").append(divCard[i]);
-                    
-            //     <div class="card" style="width: 18rem;">
-            //     <img src="..." class="card-img-top" alt="...">
-            //     <div class="card-body">
-            //       <h5 class="card-title">Card title</h5>
-            //       <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            //       <a href="#" class="btn btn-primary">Go somewhere</a>
-            //     </div>
-            //   </div>
+                
   };
 });
 }
@@ -139,8 +131,12 @@ function renderCityInfo() {
     }
 
     $(".city").click(function(){
-        alert($(this).attr("data-name"));
+        //alert($(this).attr("data-name"));
         //fivefx
+        console.log($(this).attr("data-name"));
+        sanitizeCityInput($(this).attr("data-name"));
+
+        displayFiveDay($(this).attr("data-name"));
         //1dayfx 
       });
 }
