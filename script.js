@@ -7,7 +7,7 @@ if (!Array.isArray(inputCitiesArray)) {
 }
 
 function sanitizeCityInput(cityInput) {
-  var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityInput + "&appid=6f878781f6244ccdbc4b04689e3394dd";
+  var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityInput + "&appid=6f878781f6244ccdbc4b04689e3394dd";
   $.ajax({
     url: queryURL,
     method: "GET",
@@ -39,11 +39,11 @@ function sanitizeCityInput(cityInput) {
 
             $("#display").append(cityName, currentIcon, windSpeed, temp, humidity );
             
-            var uvURL= "http://api.openweathermap.org/data/2.5/uvi?appid=6f878781f6244ccdbc4b04689e3394dd&lat=" + lat + "&lon=" + lon;
+            var uvURL= "https://api.openweathermap.org/data/2.5/uvi?appid=6f878781f6244ccdbc4b04689e3394dd&lat=" + lat + "&lon=" + lon;
             console.log(uvURL);
             displayUVInfo(uvURL);
 
-            var fiveDayURL= "http://api.openweathermap.org/data/2.5/forecast?q=" + cityInput + "&appid=6f878781f6244ccdbc4b04689e3394dd";
+            var fiveDayURL= "https://api.openweathermap.org/data/2.5/forecast?q=" + cityInput + "&appid=6f878781f6244ccdbc4b04689e3394dd";
             console.log(fiveDayURL);
             displayFiveDay(fiveDayURL);
 });
@@ -66,7 +66,7 @@ function displayFiveDay (fiveDayURL) {
                 console.log(fiveDayResponse.list[i*8].dt_txt)
                 var cardPngTag = fiveDayResponse.list[i*8].weather[0].icon;
                 console.log(cardPngTag);
-                var cardIcon = $("<img>").attr("src", "http://openweathermap.org/img/wn/" + cardPngTag + ".png");
+                var cardIcon = $("<img>").attr("src", "https://openweathermap.org/img/wn/" + cardPngTag + ".png");
                 cardIcon.attr("alt" , "Visual representation of daily forcast");
                 
                 cardTempConvert = Math.round(((fiveDayResponse.list[i*8].main.temp) - 273.15) * 1.80 + 32);      
